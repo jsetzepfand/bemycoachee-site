@@ -1,5 +1,8 @@
 <template>
-  <section class="booking">
+  <div class="card container stack booking">
+    <button class="close-btn" @click="$emit('close')" aria-label="Close booking" type="button">
+      ×
+    </button>
     <h2>Book a Session</h2>
     <div v-if="$bk.step === 1">
       <div class="slot-choices">
@@ -16,7 +19,7 @@
           type="email"
           @input="$bk.setEmail($bk.email)"
           placeholder="Your Email"
-          pattern="^\\S+@\\S+\\.\\S+$"
+          pattern="^\S+@\S+\.\S+$"
         />
         <button type="submit">Next</button>
       </form>
@@ -33,9 +36,10 @@
       <button type="button">Confirm</button>
       <button type="button" class="back" @click="$bk.prev()">Back</button>
     </div>
-  </section>
+  </div>
 </template>
 <script setup lang="ts">
+defineEmits(['close'])
 import { ref } from 'vue'
 import { useBookingStore } from '@/stores/booking'
 const $bk = useBookingStore()
@@ -48,12 +52,11 @@ function validateAndNext() {
 </script>
 <style scoped>
 .booking {
-  margin: 2.2rem 0;
-  border: 1px solid #b6c6ea;
-  padding: 1.2rem 0.8rem;
-  border-radius: 9px;
-  max-width: 350px;
-  background: #f9fafc;
+  margin: 0 auto;
+  max-width: 410px;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
 }
 .slot-choices {
   display: flex;
@@ -89,5 +92,23 @@ input {
 .back {
   margin-left: 0.7em;
   background: #777;
+}
+.close-btn {
+  position: absolute;
+  top: 0.65em;
+  right: 0.9em;
+  background: none;
+  color: #34456b;
+  border: none;
+  font-size: 1.8em;
+  line-height: 1em;
+  padding: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+.close-btn:hover,
+.close-btn:focus-visible {
+  color: #17408a;
+  background: none;
 }
 </style>

@@ -43,6 +43,13 @@ body {
     background 0.35s,
     color 0.2s;
 }
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
 .card {
   background: var(--color-card);
   border-radius: var(--radius);
@@ -69,11 +76,6 @@ body {
 .btn-primary:focus-visible {
   background: var(--color-accent-dark);
 }
-.container {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
 .grid {
   display: grid;
   gap: var(--gap);
@@ -81,7 +83,7 @@ body {
 .stack {
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
+  gap: 1.25rem;
 }
 .input {
   background: #10192a;

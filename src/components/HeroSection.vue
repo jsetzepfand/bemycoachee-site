@@ -2,32 +2,30 @@
   <section class="hero-gradient">
     <div class="container hero-content">
       <div class="hero-radial"></div>
-      <h1 class="fade-in">Unlock Your Potential with Coaching</h1>
+      <h1>Unlock Your Potential with Coaching</h1>
       <p class="muted support">
         Coaching for personal growth, business, and health—designed for your ambitions. Discover
         clarity and momentum in 2025 and beyond.
       </p>
       <div class="actions">
-        <button class="btn btn-primary hero-cta hover-raise">Book a Session</button>
-        <a href="/pricing" class="hero-link hover-raise" tabindex="0">See pricing</a>
+        <button class="btn btn-primary hero-cta" @click="$emit('book')">Book a Session</button>
+        <a href="/pricing" class="hero-link" tabindex="0">See pricing</a>
       </div>
     </div>
   </section>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineEmits(['book'])
+</script>
 <style scoped>
 .hero-gradient {
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
+  /* REMOVE min-height, flex, align-items, justify-content, padding-top tricks; just standard flow */
   background:
     radial-gradient(ellipse 90% 90% at 50% 10%, var(--color-accent) 11%, transparent 72%),
     linear-gradient(112deg, #3957cb 18%, var(--color-bg) 75%);
-  min-height: 72vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 4vw;
 }
 .hero-content {
   max-width: 720px;
@@ -35,6 +33,7 @@
   position: relative;
   text-align: center;
   padding: 3rem 0 2.2rem;
+  margin-block-end: 2.7rem;
 }
 .hero-radial {
   content: '';
@@ -83,21 +82,6 @@ h1 {
   position: relative;
   z-index: 1;
 }
-/* Fade-In Animation */
-.fade-in {
-  opacity: 0;
-  animation: fadeInHero 0.9s cubic-bezier(0.38, 0.95, 0.56, 1) 0.15s 1 forwards;
-}
-@keyframes fadeInHero {
-  from {
-    opacity: 0;
-    transform: translateY(34px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
 .support {
   margin-bottom: 2.2rem;
   font-size: 1.17rem;
@@ -119,6 +103,13 @@ h1 {
     background 0.15s,
     transform 0.1s;
 }
+.hero-cta:hover,
+.hero-cta:active,
+.hero-cta:focus-visible {
+  background: #2574cc;
+  outline: 2px solid #8fbfff;
+  transform: translateY(-2px) scale(1.025);
+}
 .hero-link {
   padding: 0 1em;
   align-self: center;
@@ -135,21 +126,5 @@ h1 {
 .hero-link:focus-visible {
   outline: 2px solid var(--color-accent-dark);
   background: rgba(110, 168, 254, 0.08);
-}
-/* Hover Raise shared for CTA and Link */
-.hover-raise {
-  transition:
-    background 0.15s,
-    transform 0.1s,
-    box-shadow 0.15s;
-}
-.hover-raise:hover,
-.hover-raise:active,
-.hover-raise:focus-visible {
-  background: #2574cc;
-  outline: 2px solid #8fbfff;
-  transform: translateY(-2px) scale(1.025);
-  box-shadow: 0 4px 20px #0e204740;
-  color: #fff;
 }
 </style>
