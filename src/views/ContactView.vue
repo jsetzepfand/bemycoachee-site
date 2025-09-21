@@ -1,31 +1,39 @@
 <template>
-  <form class="contact" @submit.prevent="submit" aria-label="Contact form">
+  <form class="contact stack" @submit.prevent="submit" aria-label="Contact form">
     <h1>Contact</h1>
+    <label for="c-name">Name</label>
     <input
+      id="c-name"
       v-model="name"
-      type="text"
-      placeholder="Your Name"
-      :class="{ err: e.name }"
-      aria-label="Your Name"
-      tabindex="0"
+      class="input"
+      :aria-invalid="e.name ? 'true' : 'false'"
+      autocomplete="name"
+      required
     />
+    <small v-if="e.name" class="err" role="alert">Name required</small>
+    <label for="c-email">Email</label>
     <input
+      id="c-email"
       v-model="email"
       type="email"
-      placeholder="Your Email"
-      :class="{ err: e.email }"
-      aria-label="Your Email"
-      tabindex="0"
+      class="input"
+      :aria-invalid="e.email ? 'true' : 'false'"
+      autocomplete="email"
+      required
     />
+    <small v-if="e.email" class="err" role="alert">Valid email required</small>
+    <label for="c-msg">Message</label>
     <textarea
+      id="c-msg"
       v-model="msg"
-      placeholder="Your Message"
-      :class="{ err: e.msg }"
-      aria-label="Your Message"
-      tabindex="0"
+      class="input"
+      :aria-invalid="e.msg ? 'true' : 'false'"
+      rows="3"
+      required
     ></textarea>
-    <button type="submit" tabindex="0">Send</button>
-    <div v-if="result" class="success">Your message was sent!</div>
+    <small v-if="e.msg" class="err" role="alert">Message required</small>
+    <button class="btn btn-primary" type="submit">Send</button>
+    <div v-if="result" class="success" role="alert">Thanks, your message was sent!</div>
   </form>
 </template>
 
@@ -37,61 +45,45 @@ const name = ref(''),
   result = ref(false)
 const e = ref({ name: false, email: false, msg: false })
 function submit() {
-  e.value = { name: !name.value, email: !/\S+@\S+\.\S+/.test(email.value), msg: !msg.value }
+  e.value = {
+    name: !name.value.trim(),
+    email: !/^\S+@\S+\.\S+$/.test(email.value),
+    msg: !msg.value.trim(),
+  }
   if (!e.value.name && !e.value.email && !e.value.msg) {
     result.value = true
-    setTimeout(() => (result.value = false), 2000)
-    name.value = email.value = msg.value = ''
+    setTimeout(() => (result.value = false), 2200)
+    name.value = ''
+    email.value = ''
+    msg.value = ''
   }
 }
 </script>
 
 <style scoped>
 .contact {
-  max-width: 400px;
+  max-width: 420px;
   margin: 3rem auto;
   padding: 2rem 1.2rem;
-  background: #fafbff;
-  border-radius: 9px;
-  box-shadow: 0 2px 12px #0001;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+  background: #161925;
+  border-radius: 12px;
+  box-shadow: 0 2px 14px #192a4022;
 }
-input,
-textarea {
-  font: inherit;
-  padding: 0.72em 0.7em;
-  border: 1px solid #bbb;
-  border-radius: 5px;
-}
-input:focus-visible,
-textarea:focus-visible,
-button:focus-visible {
-  outline: 2px solid #53baff;
-  background: #eef6fe;
-}
-button {
-  background: #213160;
-  color: #fff;
-  font-weight: 700;
-  border: none;
-  border-radius: 5px;
-  padding: 0.7em 2em;
-  cursor: pointer;
-}
-button:hover {
-  background: #135cd1;
+label {
+  font-weight: 600;
+  margin-bottom: 0.3em;
 }
 .err {
-  border-color: #e45d5d;
-  background: #fff0f0;
+  color: #c52b33;
+  font-size: 0.97em;
+  margin-bottom: 0.7em;
 }
 .success {
-  color: #28935d;
-  margin-top: 0.5rem;
-}
-h1 {
-  margin-bottom: 0.5rem;
+  color: #258c4d;
+  background: #183f2622;
+  border-radius: 7px;
+  font-weight: 600;
+  padding: 0.55em 0.9em;
+  margin-top: 0.7em;
 }
 </style>
