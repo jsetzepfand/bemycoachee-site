@@ -1,39 +1,19 @@
 <template>
-  <form class="contact stack" @submit.prevent="submit" aria-label="Contact form">
-    <h1>Contact</h1>
-    <label for="c-name">Name</label>
-    <input
-      id="c-name"
-      v-model="name"
-      class="input"
-      :aria-invalid="e.name ? 'true' : 'false'"
-      autocomplete="name"
-      required
-    />
-    <small v-if="e.name" class="err" role="alert">Name required</small>
-    <label for="c-email">Email</label>
-    <input
-      id="c-email"
-      v-model="email"
-      type="email"
-      class="input"
-      :aria-invalid="e.email ? 'true' : 'false'"
-      autocomplete="email"
-      required
-    />
-    <small v-if="e.email" class="err" role="alert">Valid email required</small>
-    <label for="c-msg">Message</label>
-    <textarea
-      id="c-msg"
-      v-model="msg"
-      class="input"
-      :aria-invalid="e.msg ? 'true' : 'false'"
-      rows="3"
-      required
-    ></textarea>
-    <small v-if="e.msg" class="err" role="alert">Message required</small>
+  <form novalidate class="stack" style="max-width: 680px; margin: 0 auto">
+    <div class="field">
+      <label for="name">Name</label>
+      <input id="name" class="input" type="text" required />
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" class="input" type="email" required />
+    </div>
+    <div class="field">
+      <label for="msg">Message</label>
+      <textarea id="msg" class="input" rows="5" required></textarea>
+      <p class="help">We’ll reply within 1 business day.</p>
+    </div>
     <button class="btn btn-primary" type="submit">Send</button>
-    <div v-if="result" class="success" role="alert">Thanks, your message was sent!</div>
   </form>
 </template>
 

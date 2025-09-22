@@ -1,8 +1,21 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useBookingStore } from '@/stores/booking'
+const emit = defineEmits<{ (e: 'close'): void }>()
+const $bk = useBookingStore()
+const slots = ['Tue 10am', 'Wed 3pm', 'Thu 1pm']
+const showErr = ref(false)
+function validateAndNext() {
+  showErr.value = !$bk.email.match(/^\S+@\S+\.\S+$/)
+  if (!showErr.value) $bk.next()
+}
+</script>
 <template>
-  <div class="card container stack booking">
-    <button class="close-btn" @click="$emit('close')" aria-label="Close booking" type="button">
-      ×
-    </button>
+  <section
+    class="surface booking-wrap"
+    style="max-width: 720px; margin: 1rem auto; padding: 1rem; position: relative"
+  >
+    <button class="close-btn" style="float: right" @click="emit('close')" type="button">×</button>
     <h2>Book a Session</h2>
     <div v-if="$bk.step === 1">
       <div class="slot-choices">
@@ -36,27 +49,34 @@
       <button type="button">Confirm</button>
       <button type="button" class="back" @click="$bk.prev()">Back</button>
     </div>
-  </div>
+  </section>
 </template>
-<script setup lang="ts">
-defineEmits(['close'])
-import { ref } from 'vue'
-import { useBookingStore } from '@/stores/booking'
-const $bk = useBookingStore()
-const slots = ['Tue 10am', 'Wed 3pm', 'Thu 1pm']
-const showErr = ref(false)
-function validateAndNext() {
-  showErr.value = !$bk.email.match(/^\S+@\S+\.\S+$/)
-  if (!showErr.value) $bk.next()
-}
-</script>
 <style scoped>
-.booking {
+.booking-wrap {
+  padding: 2rem 1rem;
+  border-radius: 1.1rem;
+  box-shadow: var(--shadow);
+  width: 80%;
+  max-width: 720px;
   margin: 0 auto;
-  max-width: 410px;
-  width: 100%;
-  box-sizing: border-box;
   position: relative;
+}
+.close-btn {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.9rem;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #9093ad;
+  padding: 0.12em 0.5em;
+  border-radius: 3px;
+}
+.close-btn:focus-visible {
+  outline: 2px solid var(--accent, #6ea8fe);
+  background: #eaf6ff;
 }
 .slot-choices {
   display: flex;
@@ -92,23 +112,5 @@ input {
 .back {
   margin-left: 0.7em;
   background: #777;
-}
-.close-btn {
-  position: absolute;
-  top: 0.65em;
-  right: 0.9em;
-  background: none;
-  color: #34456b;
-  border: none;
-  font-size: 1.8em;
-  line-height: 1em;
-  padding: 0;
-  cursor: pointer;
-  z-index: 2;
-}
-.close-btn:hover,
-.close-btn:focus-visible {
-  color: #17408a;
-  background: none;
 }
 </style>

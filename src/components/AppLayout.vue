@@ -1,62 +1,72 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { RouterLink, RouterView } from 'vue-router'
+
+const theme = ref<'light' | 'dark'>('light')
+function toggleTheme() {
+  theme.value = theme.value === 'dark' ? 'light' : 'dark'
+  document.documentElement.dataset.theme = theme.value
+  localStorage.setItem('theme', theme.value)
+}
+onMounted(() => {
+  const t = document.documentElement.dataset.theme
+  theme.value = t === 'dark' || t === 'light' ? (t as 'dark' | 'light') : 'light'
+})
+</script>
+
 <template>
-  <div>
-    <header class="header card" role="banner">
-      <span class="brand">BeMyCoachee</span>
-      <nav aria-label="Main Navigation">
-        <a href="/" class="btn" tabindex="0">Home</a>
-        <a href="/pricing" class="btn" tabindex="0">Pricing</a>
-        <a href="/contact" class="btn" tabindex="0">Contact</a>
-      </nav>
+  <div class="app-root" style="min-height: 100vh; display: flex; flex-direction: column">
+    <header style="border-bottom: 1px solid var(--border)">
+      <div
+        class="container"
+        style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem"
+      >
+        <RouterLink to="/" class="link" style="font-weight: 700">BeMyCoachee</RouterLink>
+        <nav style="display: flex; gap: 1rem; margin-left: 1rem">
+          <RouterLink to="/" class="link">Home</RouterLink>
+          <RouterLink to="/pricing" class="link">Pricing</RouterLink>
+          <RouterLink to="/contact" class="link">Contact</RouterLink>
+        </nav>
+        <button
+          type="button"
+          class="btn"
+          style="margin-left: auto"
+          aria-label="Toggle dark mode"
+          :aria-pressed="theme === 'dark'"
+          @click="toggleTheme"
+        >
+          {{ theme === 'dark' ? '🌙' : '☀️' }}
+        </button>
+      </div>
     </header>
-    <main role="main" style="margin-top: 2.4rem; overflow: visible">
-      <slot />
+
+    <main style="flex: 1">
+      <div class="container">
+        <div class="surface" style="padding: 1.25rem; margin-block: 1.25rem">
+          <RouterView />
+        </div>
+      </div>
     </main>
-    <footer class="footer card muted" role="contentinfo">© {{ year }} BeMyCoachee</footer>
+
+    <footer style="border-top: 1px solid var(--border)">
+      <div class="container" style="padding: 1rem; color: var(--muted); font-size: 0.9rem">
+        © {{ new Date().getFullYear() }} BeMyCoachee
+      </div>
+    </footer>
   </div>
 </template>
-<script setup lang="ts">
-const year = new Date().getFullYear()
-</script>
+
 <style scoped>
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 1.4rem 1.1rem 1.4rem;
-  background: var(--color-card);
-  border-bottom-left-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
+.link {
+  color: var(--text);
+  text-decoration: none;
 }
-.brand {
-  font-weight: 800;
-  font-size: 1.32rem;
+.link:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
-nav {
-  display: flex;
-  gap: 1.1rem;
-}
-.btn {
-  background: none;
-  color: var(--color-fg);
-  padding: 0.72em 1.2em;
-  border-radius: var(--radius);
-  font-size: 1rem;
-  font-weight: 600;
-}
-.btn:focus-visible {
-  outline: 2px solid var(--color-accent);
-  background: #172142;
-  color: var(--color-accent);
-}
-.footer {
-  margin: 3.5rem auto 0;
-  text-align: center;
-  font-size: 0.98rem;
-  padding: 1.3rem 0 1.1rem 0;
-  max-width: 500px;
-}
-main {
-  min-height: 60vh;
-  overflow: visible;
+.link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 </style>
